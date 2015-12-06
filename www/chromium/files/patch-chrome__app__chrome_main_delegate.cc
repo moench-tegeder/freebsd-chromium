@@ -1,5 +1,5 @@
---- chrome/app/chrome_main_delegate.cc.orig	2015-10-21 18:00:37.000000000 -0400
-+++ chrome/app/chrome_main_delegate.cc	2015-10-23 12:25:02.965569000 -0400
+--- chrome/app/chrome_main_delegate.cc.orig	2015-12-04 21:52:56.643311000 +0100
++++ chrome/app/chrome_main_delegate.cc	2015-12-04 21:57:06.485677000 +0100
 @@ -103,7 +103,7 @@
  #include "ui/base/x/x11_util.h"
  #endif
@@ -9,15 +9,6 @@
  #include "components/crash/content/app/breakpad_linux.h"
  #endif
  
-@@ -405,7 +405,7 @@
- }  // namespace
- 
- ChromeMainDelegate::ChromeMainDelegate() {
--#if defined(OS_MACOSX) || defined(OS_WIN) || defined(OS_LINUX)
-+#if defined(OS_MACOSX) || defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
-   // Record the startup process creation time on supported platforms.
-   startup_metric_utils::RecordStartupProcessCreationTime(
-       base::CurrentProcessInfo::CreationTime());
 @@ -508,7 +508,7 @@
        std::string format_str =
            command_line.GetSwitchValueASCII(switches::kDiagnosticsFormat);

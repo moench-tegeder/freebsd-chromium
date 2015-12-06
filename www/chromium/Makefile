@@ -1,5 +1,5 @@
 # Created by: Florent Thoumie <flz@FreeBSD.org>
-# $FreeBSD: head/www/chromium/Makefile 397393 2015-09-20 19:38:24Z rene $
+# $FreeBSD: head/www/chromium/Makefile 401479 2015-11-13 06:40:45Z rene $
 
 PORTNAME=	chromium
 PORTVERSION=	47.0.2526.73
@@ -22,8 +22,7 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/gperf:${PORTSDIR}/devel/gperf \
 		${LOCALBASE}/include/linux/videodev2.h:${PORTSDIR}/multimedia/v4l_compat \
 		${LOCALBASE}/share/usbids/usb.ids:${PORTSDIR}/misc/usbids \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:${PORTSDIR}/devel/py-Jinja2 \
-		${PYTHON_PKGNAMEPREFIX}ply>0:${PORTSDIR}/devel/py-ply \
-		${PYTHON_PKGNAMEPREFIX}beautifulsoup>0:${PORTSDIR}/www/py-beautifulsoup
+		${PYTHON_PKGNAMEPREFIX}ply>0:${PORTSDIR}/devel/py-ply
 
 LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo \
 		libdbus-1.so:${PORTSDIR}/devel/dbus \
@@ -243,9 +242,6 @@ post-patch:
 		${WRKSRC}/base/base.gyp
 
 pre-configure:
-.if ! ${PORT_OPTIONS:MTEST}
-	${ECHO_CMD} > ${WRKSRC}/chrome/test/data/webui/i18n_process_css_test.html
-.endif
 	# phajdan-jr: list of things *not* to remove, so maybe the script
 	#             should be called "keep_bundled_libraries.py"
 	cd ${WRKSRC} && ${PYTHON_CMD} \
@@ -274,6 +270,13 @@ pre-configure:
 		'third_party/brotli' \
 		'third_party/boringssl' \
 		'third_party/cacheinvalidation' \
+		'third_party/catapult' \
+		'third_party/catapult/third_party/beautifulsoup' \
+		'third_party/catapult/tracing' \
+		'third_party/catapult/tracing/third_party' \
+		'third_party/catapult/tracing/third_party/tvcm' \
+		'third_party/catapult/tracing/third_party/tvcm/third_party/rcssmin' \
+		'third_party/catapult/tracing/third_party/tvcm/third_party/rjsmin' \
 		'third_party/cld' \
 		'third_party/cros_system_api' \
 		'third_party/dom_distiller_js' \
@@ -298,11 +301,9 @@ pre-configure:
 		'third_party/libsrtp' \
 		'third_party/libvpx_new' \
 		'third_party/libvpx_new/source/libvpx/third_party/x86inc' \
+		'third_party/libwebm' \
 		'third_party/libxml/chromium' \
 		'third_party/libXNVCtrl' \
-		'third_party/libwebm' \
-		'third_party/libwebm/source' \
-		'third_party/libwebm/source/common' \
 		'third_party/libyuv' \
 		'third_party/lss' \
 		'third_party/lzma_sdk' \
@@ -331,13 +332,6 @@ pre-configure:
 		'third_party/sqlite' \
 		'third_party/tcmalloc' \
 		'third_party/tlslite' \
-		'third_party/catapult' \
-		'third_party/catapult/tracing' \
-		'third_party/catapult/tracing/third_party' \
-		'third_party/catapult/tracing/third_party/tvcm/third_party' \
-		'third_party/catapult/tracing/third_party/tvcm/third_party/rcssmin' \
-		'third_party/catapult/tracing/third_party/tvcm/third_party/rjsmin' \
-		'third_party/catapult/tracing/third_party/tvcm/tvcm' \
 		'third_party/usrsctp' \
 		'third_party/web-animations-js' \
 		'third_party/webdriver' \
@@ -355,6 +349,10 @@ pre-configure:
 		${GYP_DEFINES:C/^/-D/} || ${FALSE}
 	# allow removal of third_party/adobe
 	${ECHO_CMD} > ${WRKSRC}/flapper_version.h
+	# missing file: file is in -testdata only, but configure stage
+	# will fail if it's not there. do not break TESTS build while
+	# allowing regular build without pulling in -testdata.
+	${TOUCH} ${WRKSRC}/chrome/test/data/webui/i18n_process_css_test.html
 
 do-configure:
 	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${PYTHON_CMD} \

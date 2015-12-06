@@ -1,5 +1,5 @@
---- remoting/remoting_host.gypi.orig	2015-10-14 03:01:21.000000000 -0400
-+++ remoting/remoting_host.gypi	2015-10-23 13:56:18.229194000 -0400
+--- remoting/remoting_host.gypi.orig	2015-12-04 23:06:13.124292000 +0100
++++ remoting/remoting_host.gypi	2015-12-04 23:08:18.149472000 +0100
 @@ -18,7 +18,7 @@
          'remoting_host_win.gypi',
        ],
@@ -27,15 +27,6 @@
                'dependencies': [
                  '../base/allocator/allocator.gyp:allocator',
                ],
-@@ -549,7 +549,7 @@
-                 }],  # mac_breakpad==1
-               ],  # conditions
-             }],  # OS=mac
--            ['OS=="linux" and use_allocator!="none"', {
-+            ['(OS=="linux" or os_bsd==1) and use_allocator!="none"', {
-               'dependencies': [
-                 '../base/allocator/allocator.gyp:allocator',
-               ],
 @@ -671,13 +671,13 @@
                  'host/it2me/it2me_native_messaging_host_main.h',
                ],
@@ -48,7 +39,7 @@
                    ],
                  }],
 -                ['OS=="linux" and use_allocator!="none"', {
-+                ['(OS=="linux" or os_bsd==1) and use_allocator!="none"', {
++                ['OS=="linux" or os_bsd==1 and use_allocator!="none"', {
                    'dependencies': [
                      '../base/allocator/allocator.gyp:allocator',
                    ],

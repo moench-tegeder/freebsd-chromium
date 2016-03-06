@@ -1,8 +1,8 @@
 # Created by: Florent Thoumie <flz@FreeBSD.org>
-# $FreeBSD: head/www/chromium/Makefile 408307 2016-02-06 17:55:52Z rene $
+# $FreeBSD: head/www/chromium/Makefile 409197 2016-02-19 19:38:18Z rene $
 
 PORTNAME=	chromium
-PORTVERSION=	48.0.2564.116
+PORTVERSION=	49.0.2623.75
 CATEGORIES=	www
 MASTER_SITES=	http://commondatastorage.googleapis.com/chromium-browser-official/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} # default, but needed to get distinfo correct if TEST is on
@@ -56,7 +56,7 @@ RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:${PORTSDIR}/a
 		xdg-open:${PORTSDIR}/devel/xdg-utils
 
 ONLY_FOR_ARCHS=	i386 amd64
-USES=		bison compiler:c++11-lib cpe desktop-file-utils execinfo jpeg \
+USES=		bison compiler:c++14-lang cpe desktop-file-utils execinfo jpeg \
 		ninja perl5 pkgconfig python:2,build shebangfix tar:xz
 CPE_VENDOR=	google
 CPE_PRODUCT=	chrome
@@ -338,6 +338,7 @@ pre-configure:
 		'third_party/webdriver' \
 		'third_party/webrtc' \
 		'third_party/widevine' \
+		'third_party/woff2' \
 		'third_party/x86inc' \
 		'third_party/yasm' \
 		'third_party/zlib' \

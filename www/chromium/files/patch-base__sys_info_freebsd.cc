@@ -1,35 +1,7 @@
---- base/sys_info_freebsd.cc.orig	2015-07-15 16:29:55.000000000 -0400
-+++ base/sys_info_freebsd.cc	2015-07-21 20:50:15.595303000 -0400
-@@ -4,6 +4,7 @@
- 
- #include "base/sys_info.h"
- 
-+#include <sys/types.h>
- #include <sys/sysctl.h>
- 
- #include "base/logging.h"
-@@ -23,6 +24,19 @@
- }
- 
- // static
-+int64 SysInfo::AmountOfAvailablePhysicalMemory() {
-+  int available_pages, page_size;
-+  size_t size = sizeof(available_pages);
-+  sysctlbyname("vm.stats.vm.v_free_count", &available_pages, &size, NULL, 0);
-+  sysctlbyname("vm.stats.vm.v_page_size", &page_size, &size, NULL, 0);
-+  if (available_pages == -1 || page_size == -1) {
-+    NOTREACHED();
-+    return 0;
-+  }
-+  return static_cast<int64>(available_pages) * page_size;
-+}
-+
-+// static
- uint64 SysInfo::MaxSharedMemorySize() {
-   size_t limit;
-   size_t size = sizeof(limit);
-@@ -33,4 +47,25 @@
-   return static_cast<uint64>(limit);
+--- base/sys_info_freebsd.cc.orig	2016-03-02 23:05:36.625924709 +0100
++++ base/sys_info_freebsd.cc	2016-03-02 23:05:21.976925373 +0100
+@@ -35,4 +35,25 @@
+   return static_cast<uint64_t>(limit);
  }
  
 +// static

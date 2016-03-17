@@ -205,7 +205,8 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-gcc
 CFLAGS+=	-fno-stack-protector # gcc 4.8 cannot find __stack_chk_fail_local
 .else
 GYP_DEFINES+=	clang=1
-CFLAGS+=	-Wno-unknown-warning-option
+CFLAGS+=	-Wno-unknown-warning-option \
+			-D_LIBCPP_TRIVIAL_PAIR_COPY_CTOR=1 # work around base r261801
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-clang
 CONFIGURE_ENV+=	AR=/usr/bin/ar
 .endif

@@ -1,6 +1,45 @@
---- base/sys_info_freebsd.cc.orig	2016-03-02 23:05:36.625924709 +0100
-+++ base/sys_info_freebsd.cc	2016-03-02 23:05:21.976925373 +0100
-@@ -35,4 +35,25 @@
+--- base/sys_info_freebsd.cc.orig_orig	2016-03-20 18:19:10.466074029 +0100
++++ base/sys_info_freebsd.cc	2016-03-20 18:22:51.449059006 +0100
+@@ -12,12 +12,34 @@
+ 
+ namespace base {
+ 
++int64_t SysInfo::AmountOfAvailablePhysicalMemory() {
++  int page_size, r = 0;
++  unsigned pgfree, pginact, pgcache;
++  size_t size = sizeof(page_size);
++  size_t szpg = sizeof(pgfree);
++  if(!r)
++    r = sysctlbyname("vm.stats.vm.v_page_size", &page_size, &size, NULL, 0);
++  if(!r)
++    r = sysctlbyname("vm.stats.vm.v_free_count", &pgfree, &szpg, NULL, 0);
++  if(!r)
++    r = sysctlbyname("vm.stats.vm.v_inactive_count", &pginact, &szpg, NULL, 0);
++  if(!r)
++    r = sysctlbyname("vm.stats.vm.v_cache_count", &pgcache, &szpg, NULL, 0);
++  if (r == -1) {
++    NOTREACHED();
++    return 0;
++  }
++  return static_cast<int64_t>((pgfree + pginact + pgcache) * page_size);
++}
++
+ int64_t SysInfo::AmountOfPhysicalMemory() {
+-  int pages, page_size;
++  int pages, page_size, r = 0;
+   size_t size = sizeof(pages);
+-  sysctlbyname("vm.stats.vm.v_page_count", &pages, &size, NULL, 0);
+-  sysctlbyname("vm.stats.vm.v_page_size", &page_size, &size, NULL, 0);
+-  if (pages == -1 || page_size == -1) {
++  if(!r)
++    r = sysctlbyname("vm.stats.vm.v_page_count", &pages, &size, NULL, 0);
++  if(!r)
++    r = sysctlbyname("vm.stats.vm.v_page_size", &page_size, &size, NULL, 0);
++  if (r == -1) {
+     NOTREACHED();
+     return 0;
+   }
+@@ -35,4 +57,25 @@
    return static_cast<uint64_t>(limit);
  }
  

@@ -1,9 +1,9 @@
---- device/usb/usb_service_impl.cc.orig	2015-12-04 22:33:43.708484000 +0100
-+++ device/usb/usb_service_impl.cc	2015-12-04 22:39:47.903086000 +0100
-@@ -20,7 +20,11 @@
- #include "device/usb/usb_device_handle.h"
+--- device/usb/usb_service_impl.cc.orig	2016-04-16 19:51:28.897109139 +0200
++++ device/usb/usb_service_impl.cc	2016-04-16 19:54:54.226095687 +0200
+@@ -24,7 +24,11 @@
  #include "device/usb/usb_error.h"
  #include "device/usb/webusb_descriptors.h"
+ #include "net/base/io_buffer.h"
 +#if defined(OS_FREEBSD)
 +#include <libusb.h>
 +#else
@@ -12,7 +12,7 @@
  
  #if defined(OS_WIN)
  #include <setupapi.h>
-@@ -541,6 +545,7 @@
+@@ -292,6 +296,7 @@
    }
    context_ = new UsbContext(platform_context);
  
@@ -20,7 +20,7 @@
    rv = libusb_hotplug_register_callback(
        context_->context(),
        static_cast<libusb_hotplug_event>(LIBUSB_HOTPLUG_EVENT_DEVICE_ARRIVED |
-@@ -553,6 +558,8 @@
+@@ -304,6 +309,8 @@
    }
  
    RefreshDevices();
@@ -29,7 +29,7 @@
  #if defined(OS_WIN)
    DeviceMonitorWin* device_monitor = DeviceMonitorWin::GetForAllInterfaces();
    if (device_monitor) {
-@@ -562,9 +569,11 @@
+@@ -313,9 +320,11 @@
  }
  
  UsbServiceImpl::~UsbServiceImpl() {
@@ -41,7 +41,7 @@
    for (const auto& map_entry : devices_) {
      map_entry.second->OnDisconnect();
    }
-@@ -802,6 +811,7 @@
+@@ -553,6 +562,7 @@
    device->OnDisconnect();
  }
  
@@ -49,7 +49,7 @@
  // static
  int LIBUSB_CALL UsbServiceImpl::HotplugCallback(libusb_context* context,
                                                  PlatformUsbDevice device,
-@@ -839,6 +849,7 @@
+@@ -590,6 +600,7 @@
  
    return 0;
  }

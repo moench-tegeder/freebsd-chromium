@@ -1,14 +1,14 @@
---- build/common.gypi.orig	2015-09-01 16:10:41.000000000 -0400
-+++ build/common.gypi	2015-09-03 09:38:09.528529000 -0400
-@@ -105,7 +105,7 @@
+--- build/common.gypi.orig	2016-04-16 15:09:38.557634592 +0200
++++ build/common.gypi	2016-04-16 15:11:23.752269150 +0200
+@@ -112,7 +112,7 @@
  
            'conditions': [
-             # Windows and Linux (including Chrome OS) use Aura and Ash.
+             # Windows and Linux use Aura, but not Ash.
 -            ['OS=="win" or OS=="linux"', {
-+            ['OS=="win" or OS=="linux" or OS=="freebsd" or OS=="openbsd"', {
-               'use_ash%': 1,
++            ['OS=="win" or OS=="linux" or OS=="freebsd"', {
                'use_aura%': 1,
              }],
+ 
 @@ -729,6 +729,12 @@
            'os_bsd%': 0,
          }],

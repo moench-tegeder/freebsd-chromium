@@ -2,7 +2,7 @@
 # $FreeBSD: head/www/chromium/Makefile 412351 2016-04-01 14:33:55Z mat $
 
 PORTNAME=	chromium
-PORTVERSION=	49.0.2623.112
+PORTVERSION=	50.0.2661.75
 CATEGORIES=	www
 MASTER_SITES=	http://commondatastorage.googleapis.com/chromium-browser-official/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} # default, but needed to get distinfo correct if TEST is on
@@ -40,7 +40,6 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libgcrypt.so:security/libgcrypt \
 		libpci.so:devel/libpci \
 		libdrm.so:graphics/libdrm \
-		libicuuc.so:devel/icu \
 		libjsoncpp.so:devel/jsoncpp \
 		libnspr4.so:devel/nspr \
 		libpng.so:graphics/png \
@@ -109,7 +108,6 @@ GYP_DEFINES+=	\
 		use_system_bzip2=1 \
 		use_system_flac=1 \
 		use_system_harfbuzz=1 \
-		use_system_icu=1 \
 		use_system_jsoncpp=1 \
 		use_system_libevent=1 \
 		use_system_libexif=1 \
@@ -304,7 +302,7 @@ pre-configure:
 		'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
 		'third_party/hunspell' \
 		'third_party/iccjpeg' \
-		'third_party/icu/icu.isolate' \
+		'third_party/icu' \
 		'third_party/jinja2' \
 		'third_party/jstemplate' \
 		'third_party/khronos' \
@@ -323,10 +321,10 @@ pre-configure:
 		'third_party/lzma_sdk' \
 		'third_party/markupsafe' \
 		'third_party/mesa' \
-		'third_party/mojo' \
 		'third_party/modp_b64' \
 		'third_party/mt19937ar' \
 		'third_party/npapi' \
+		'third_party/openh264' \
 		'third_party/openmax_dl' \
 		'third_party/opus' \
 		'third_party/ots' \
@@ -396,7 +394,6 @@ do-install:
 		${STAGEDIR}${DATADIR}
 	cd ${WRKSRC}/out/${BUILDTYPE} && \
 		${COPYTREE_SHARE} "locales resources" ${STAGEDIR}${DATADIR}
-	@${MKDIR} ${STAGEDIR}${DESKTOPDIR}
 	${INSTALL_DATA} ${WRKDIR}/chromium-browser.desktop \
 		${STAGEDIR}${DESKTOPDIR}
 	${INSTALL_SCRIPT} ${WRKDIR}/chrome ${STAGEDIR}${PREFIX}/bin

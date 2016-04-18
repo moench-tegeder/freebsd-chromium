@@ -1,9 +1,9 @@
---- components/autofill/core/browser/form_structure.cc.orig	2016-03-05 21:25:19.742524141 +0100
-+++ components/autofill/core/browser/form_structure.cc	2016-03-05 21:25:31.566523885 +0100
-@@ -35,7 +35,11 @@
+--- components/autofill/core/browser/form_structure.cc.orig	2016-04-16 19:05:41.214298612 +0200
++++ components/autofill/core/browser/form_structure.cc	2016-04-16 19:06:09.062296628 +0200
+@@ -34,7 +34,11 @@
+ #include "components/autofill/core/common/form_field_data_predictions.h"
  #include "components/rappor/rappor_service.h"
  #include "components/rappor/rappor_utils.h"
- #include "third_party/libxml/chromium/libxml_utils.h"
 +#if defined(OS_BSD)
 +#include <re2/re2.h>
 +#else

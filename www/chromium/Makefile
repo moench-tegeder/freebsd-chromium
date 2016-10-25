@@ -1,8 +1,9 @@
 # Created by: Florent Thoumie <flz@FreeBSD.org>
-# $FreeBSD: head/www/chromium/Makefile 417184 2016-06-21 06:02:32Z rene $
+# $FreeBSD: head/www/chromium/Makefile 423591 2016-10-09 12:10:02Z jbeich $
 
 PORTNAME=	chromium
 PORTVERSION=	52.0.2743.116
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	http://commondatastorage.googleapis.com/chromium-browser-official/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} # default, but needed to get distinfo correct if TEST is on
@@ -12,6 +13,8 @@ COMMENT=	Google web browser based on WebKit
 
 LICENSE=	BSD3CLAUSE LGPL21 MPL
 LICENSE_COMB=	multi
+
+BROKEN_FreeBSD_9=does not patch
 
 CFLAGS+=	-isystem${LOCALBASE}/include -I${PREFIX}/include/atk-1.0
 
@@ -100,7 +103,7 @@ GYP_DEFINES+=	\
 		enable_webrtc=1 \
 		werror= \
 		no_gc_sections=1 \
-                OS=freebsd \
+		OS=freebsd \
 		os_ver=${OSVERSION} \
 		prefix_dir=${LOCALBASE} \
 		python_ver=${PYTHON_VER} \
@@ -339,8 +342,8 @@ pre-configure:
 		'third_party/ply' \
 		'third_party/polymer' \
 		'third_party/protobuf' \
-                'third_party/protobuf/third_party' \
-                'third_party/protobuf/third_party/six' \
+		'third_party/protobuf/third_party' \
+		'third_party/protobuf/third_party/six' \
 		'third_party/pywebsocket' \
 		'third_party/qcms' \
 		'third_party/qunit' \
